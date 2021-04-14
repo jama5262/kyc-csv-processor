@@ -1,5 +1,6 @@
 package com.jama.kyc.kyccsvprocessor.controller
 
+import com.jama.kyc.kyccsvprocessor.model.Record
 import com.jama.kyc.kyccsvprocessor.service.KYCService
 import com.jama.kyc.kyccsvprocessor.utils.Constants.API_ENDPOINT
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,13 +17,14 @@ class KYCController {
     @PostMapping(path = ["upload"])
     fun uploadCSV(
         @RequestParam("file") file: MultipartFile,
-        @RequestParam("fileName") fileName: String
-    ) {
-        service.uploadCSV(file, fileName)
-    }
+        @RequestParam("name") name: String
+    ) = service.uploadCSV(file, name)
 
     @PostMapping(path = ["upload-sample"])
-    fun uploadSampleCSV(@RequestParam("fileName") fileName: String) = service.uploadSampleCSV(fileName)
+    fun uploadSampleCSV(
+        @RequestParam("fileName") fileName: String,
+        @RequestParam("name") name: String
+    ) = service.uploadSampleCSV(fileName, name)
 
     @GetMapping(path = ["all-samples"])
     fun getAllSampleFiles() = service.getAllSampleFiles()
@@ -36,17 +38,18 @@ class KYCController {
     @DeleteMapping(path = ["{id}"])
     fun deleteKYC(@PathVariable("id") id: String) = service.deleteKYC(id)
 
-    @PostMapping(path = ["{id}/{record-id}"])
+    @PostMapping(path = ["{id}"])
     fun addRecord(
         @PathVariable("id") id: String,
-        @PathVariable("record-id") recordId: String
-    ) = service.addRecord(id, recordId)
+        @RequestBody record: Record
+    ) = service.addRecord(id, record)
 
     @PutMapping(path = ["{id}/{record-id}"])
     fun updateRecord(
         @PathVariable("id") id: String,
-        @PathVariable("record-id") recordId: String
-    ) = service.updateRecord(id, recordId)
+        @PathVariable("record-id") recordId: String,
+        @RequestBody record: Record
+    ) = service.updateRecord(id, recordId, record)
 
     @DeleteMapping(path = ["{id}/{record-id}"])
     fun deleteRecord(

@@ -6,7 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document
 data class KYC(
     @Id
-    val id: String?,
+    val id: String? = null,
     val name: String,
-    val records: List<Record>
+    val fileName: String,
+    val records: MutableList<Record>
 )
