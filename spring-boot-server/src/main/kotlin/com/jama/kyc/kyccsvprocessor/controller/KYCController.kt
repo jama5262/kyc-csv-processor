@@ -1,33 +1,47 @@
 package com.jama.kyc.kyccsvprocessor.controller
 
+import com.jama.kyc.kyccsvprocessor.service.KYCService
 import com.jama.kyc.kyccsvprocessor.utils.Constants.API_ENDPOINT
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping(path = [API_ENDPOINT])
 class KYCController {
 
+    @Autowired
+    private lateinit var service: KYCService
+
     @PostMapping(path = ["upload"])
-    fun uploadCSV() {}
+    fun uploadCSV() = service.uploadCSV()
 
     @PostMapping(path = ["upload-sample"])
-    fun uploadSampleCSV() {}
+    fun uploadSampleCSV() = service.uploadSampleCSV()
 
     @GetMapping
-    fun getAllKYC() = "Get all KYC"
+    fun getAllKYC() = service.getAllKYC()
 
     @GetMapping(path = ["{id}"])
-    fun getKYC(@PathVariable("id") id: String) = "Get KYC $id"
-
-    @DeleteMapping
-    fun deleteKYC() = 0
-
-    @PostMapping(path = ["{id}"])
-    fun addRecord(@PathVariable("id") id: String) {}
-
-    @PutMapping(path = ["{id}"])
-    fun updateRecord(@PathVariable("id") id: String) = 0
+    fun getKYC(@PathVariable("id") id: String) = service.getKYC(id)
 
     @DeleteMapping(path = ["{id}"])
-    fun deleteRecord(@PathVariable("id") id: String) = 0
+    fun deleteKYC(@PathVariable("id") id: String) = service.deleteKYC(id)
+
+    @PostMapping(path = ["{id}/{record-id}"])
+    fun addRecord(
+        @PathVariable("id") id: String,
+        @PathVariable("record-id") recordId: String
+    ) = service.addRecord(id, recordId)
+
+    @PutMapping(path = ["{id}/{record-id}"])
+    fun updateRecord(
+        @PathVariable("id") id: String,
+        @PathVariable("record-id") recordId: String
+    ) = service.updateRecord(id, recordId)
+
+    @DeleteMapping(path = ["{id}/{record-id}"])
+    fun deleteRecord(
+        @PathVariable("id") id: String,
+        @PathVariable("record-id") recordId: String
+    ) = service.deleteRecord(id, recordId)
 }
