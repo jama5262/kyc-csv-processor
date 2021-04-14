@@ -2,8 +2,6 @@ package com.jama.kyc.kyccsvprocessor.service
 
 import com.jama.kyc.kyccsvprocessor.model.KYC
 import com.jama.kyc.kyccsvprocessor.repository.KYCRepository
-import com.jama.kyc.kyccsvprocessor.utils.FileUtil
-import com.jama.kyc.kyccsvprocessor.utils.FileUtil.getFile
 import com.jama.kyc.kyccsvprocessor.utils.records
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -22,8 +20,18 @@ class KYCService {
     }
 
     fun uploadSampleCSV(fileName: String) {
-        val records = File(getFile("samples/$fileName"))
+        val records = File("src/main/resources/samples/$fileName")
         println(records)
+    }
+
+    fun getAllSampleFiles(): List<String> {
+        return File("src/main/resources/samples")
+            .walk()
+            .filter { it.extension == "csv" }
+            .map {
+            println(it.name)
+            it.name
+        }.toList()
     }
 
     fun getAllKYC(): List<KYC> {

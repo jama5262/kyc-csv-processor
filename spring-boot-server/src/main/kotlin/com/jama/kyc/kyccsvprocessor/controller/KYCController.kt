@@ -24,6 +24,9 @@ class KYCController {
     @PostMapping(path = ["upload-sample"])
     fun uploadSampleCSV(@RequestParam("fileName") fileName: String) = service.uploadSampleCSV(fileName)
 
+    @GetMapping(path = ["all-samples"])
+    fun getAllSampleFiles() = service.getAllSampleFiles()
+
     @GetMapping
     fun getAllKYC() = service.getAllKYC()
 
