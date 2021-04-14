@@ -20,8 +20,12 @@ class KYCService {
     }
 
     fun uploadSampleCSV(fileName: String) {
-        val records = File("src/main/resources/samples/$fileName")
-        println(records)
+        try {
+            val records = File("src/main/resources/samples/$fileName").records()
+            println(records)
+        } catch (e: Exception) {
+            throw Exception("Path cannot be found")
+        }
     }
 
     fun getAllSampleFiles(): List<String> {
