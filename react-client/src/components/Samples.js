@@ -19,7 +19,7 @@ const Samples = () => {
                             <h3>{sample.fileName}</h3>
                             <Row
                                 justify="end">
-                                <Button type="primary">Import</Button>
+                                <Button type="primary">Try it out</Button>
                             </Row>
                         </Card>
                     </List.Item>
