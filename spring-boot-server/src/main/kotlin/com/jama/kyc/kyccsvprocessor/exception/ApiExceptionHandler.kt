@@ -10,11 +10,10 @@ class ApiExceptionHandler {
 
     @ExceptionHandler(value = [(Exception::class)])
     fun handleApiException(exception: Exception): ResponseEntity<ApiException> {
-        val statusCode = HttpStatus.BAD_REQUEST
         val apiException = ApiException(
             exception.message!!,
-            statusCode
+            404
         )
-        return ResponseEntity(apiException, statusCode)
+        return ResponseEntity(apiException, HttpStatus.BAD_REQUEST)
     }
 }

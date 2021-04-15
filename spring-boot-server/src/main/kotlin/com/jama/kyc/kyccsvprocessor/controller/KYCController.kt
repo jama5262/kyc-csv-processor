@@ -44,12 +44,11 @@ class KYCController {
         @RequestBody record: Record
     ) = service.addRecord(id, record)
 
-    @PutMapping(path = ["{id}/{record-id}"])
+    @PutMapping(path = ["{id}"])
     fun updateRecord(
         @PathVariable("id") id: String,
-        @PathVariable("record-id") recordId: String,
         @RequestBody record: Record
-    ) = service.updateRecord(id, recordId, record)
+    ) = service.updateRecord(id, record)
 
     @DeleteMapping(path = ["{id}/{record-id}"])
     fun deleteRecord(
