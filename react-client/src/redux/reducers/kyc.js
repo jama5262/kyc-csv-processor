@@ -18,7 +18,7 @@ export const kyc = (state = initialState, action) => {
         case DELETE_KYC:
             state = [...state]
             let kycPos = state.findIndex(kyc => {
-                return kyc.id == action.id
+                return kyc.id === action.id
             })
             if (kycPos >= 0) {
                 state.splice(kycPos, 1)

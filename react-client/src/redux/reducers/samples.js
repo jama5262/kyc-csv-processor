@@ -3,11 +3,11 @@ import { ADD_SAMPLES } from "../../utils/actionConstants"
 const initialState = [
     {
         id: 1,
-        text: "sample1.csv"
+        fileName: "sample1.csv"
     },
     {
         id: 2,
-        text: "sample2.csv"
+        fileName: "sample2.csv"
     }
 ]
 
