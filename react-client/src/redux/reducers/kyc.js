@@ -2,10 +2,16 @@ import { ADD_KYC, DELETE_KYC } from "../../utils/actionConstants"
 
 const initialState = [
     {
-        id: "eiruwoieruworq",
+        id: "1",
         name: "Students",
         fileName: "students.csv",
         recordCount: 20
+    },
+    {
+        id: "2",
+        name: "Teachers",
+        fileName: "teachers.csv",
+        recordCount: 2
     },
 ]
 

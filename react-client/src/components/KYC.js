@@ -12,8 +12,8 @@ const KYC = () => {
     const kycs = useSelector(state => state.kyc)
     let history = useHistory();
 
-    const handleChange = () => {
-        history.push("/records")
+    const handleChange = (id) => {
+        history.push(`/${id}`)
     }
 
     const list = (
@@ -31,7 +31,9 @@ const KYC = () => {
                                 <p>No. of records: <Text strong>22</Text></p>
                             </Col>
                             <Col>
-                                <Button type="primary" onClick={handleChange}>View</Button>
+                                <Button type="primary" onClick={() => {
+                                    handleChange(kyc.id)
+                                }}>View</Button>
                             </Col>
                         </Row>
                     </Card>

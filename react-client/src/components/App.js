@@ -6,6 +6,7 @@ import {
 
 import Samples from "./Samples";
 import KYC from "./KYC";
+import Records from "./Records";
 
 
 import { Layout, PageHeader, Row, Col, Button } from 'antd'
@@ -27,7 +28,7 @@ function App() {
         ]}
       />
       <Content style={{ padding: '0 25px', backgroundColor: "#F5F5F5" }}>
-        <Row gutter={70}>
+        <Row gutter={50}>
           <Col span={17}>
             <Router>
               <Switch>
@@ -35,7 +36,7 @@ function App() {
                   <KYC />
                 </Route>
                 <Route path="/:kycId">
-                  <div>records here</div>
+                  <Records />
                 </Route>
               </Switch>
             </Router>
