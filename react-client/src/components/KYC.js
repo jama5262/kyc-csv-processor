@@ -3,11 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { useHistory } from "react-router-dom";
 
-import { deleteKycAction } from "../redux/actions"
+import { deleteKycAction, showUploadModalAction } from "../redux/actions"
+
+import UploadCSV from "./UploadCSV";
 
 import { Row, Col, List, Card, Empty, Button, Typography } from 'antd'
 import { DeleteOutlined } from '@ant-design/icons'
 const { Text } = Typography;
+
 
 const KYC = () => {
 
@@ -22,6 +25,10 @@ const KYC = () => {
 
     const handleDeleteKyc = (id) => {
         dispatch(deleteKycAction(id))
+    }
+
+    const handleShowModal = () => {
+        dispatch(showUploadModalAction(true))
     }
 
     const list = (
@@ -64,13 +71,14 @@ const KYC = () => {
                 }}
                 description={<span>No KYCs</span>}
             >
-                <Button type="primary">Import CVS</Button>
+                <Button type="primary" onClick={handleShowModal}>Upload CVS</Button>
             </Empty>
         </Row>
     )
 
     return (
         <div>
+            <UploadCSV />
             {kycs.length !== 0 ? list : empty}
         </div >
     )

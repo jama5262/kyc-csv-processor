@@ -3,7 +3,7 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/baseUrlConstant"
 import * as types from "../../utils/actionConstants"
 
-export const getSamplesAction = samples => {
+export const getSamplesAction = () => {
     return (dispatch, _) => {
         axios({
             method: 'GET',
@@ -59,6 +59,8 @@ export const deleteRecordAction = ids => {
 }
 
 export const loadingAction = showLoading => ({ type: types.LOADING, showLoading })
+
+export const showUploadModalAction = showModal => ({ type: types.SHOW_MODAL, showModal })
 
 
 
