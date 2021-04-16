@@ -1,5 +1,9 @@
 import React from 'react'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
+import { showUploadSampleModalAction, setFileNameAction } from "../redux/actions"
+
+import UploadSampleCSV from "./UploadSampleCSV";
 
 import { Row, List, Card, Button } from 'antd'
 
@@ -7,8 +11,16 @@ const Samples = () => {
 
     const samples = useSelector(state => state.samples)
 
+    const dispatch = useDispatch()
+
+    const handleShowModal = (fileName) => {
+        dispatch(setFileNameAction(fileName))
+        dispatch(showUploadSampleModalAction(true))
+    }
+
     return (
         <div>
+            <UploadSampleCSV />
             <h2>Samples</h2>
             <List
                 dataSource={samples}
@@ -19,7 +31,9 @@ const Samples = () => {
                             <h3>{sample.fileName}</h3>
                             <Row
                                 justify="end">
-                                <Button type="primary">Try it out</Button>
+                                <Button type="primary" onClick={() => {
+                                    handleShowModal(sample.fileName)
+                                }}>Try it out</Button>
                             </Row>
                         </Card>
                     </List.Item>

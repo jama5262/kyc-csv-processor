@@ -62,14 +62,9 @@ export const loadingAction = showLoading => ({ type: types.LOADING, showLoading 
 
 export const showUploadModalAction = showModal => ({ type: types.SHOW_MODAL, showModal })
 
+export const showUploadSampleModalAction = showSampleModal => ({ type: types.SHOW_SAMPLE_MODAL, showSampleModal })
 
-
-
-export const sampleCSVAction = fileName => {
-    return (dispatch, getState) => {
-
-    }
-}
+export const setFileNameAction = fileName => ({ type: types.SET_FILE_NAME, fileName })
 
 const addKyc = (data) => {
     return (dispatch, _) => {
@@ -91,6 +86,35 @@ const addKyc = (data) => {
         }))
     }
 }
+
+export const sampleCSVAction = (name, fileName) => {
+    return (dispatch, _) => {
+
+        dispatch(loadingAction(true))
+
+        axios({
+            method: 'POST',
+            baseURL: BASE_URL,
+            url: "/upload-sample",
+            params: {
+                name,
+                fileName
+            },
+        }).then((response) => {
+            dispatch(addKyc(response.data))
+        }).catch((error) => {
+            if (error.response) {
+                message.error(error.response.data.message)
+            } else {
+                message.error(error.message)
+            }
+        }).then(() => {
+            dispatch(loadingAction(false))
+        })
+    }
+}
+
+
 
 export const uploadCSVAction = (name, file) => {
 
@@ -114,7 +138,7 @@ export const uploadCSVAction = (name, file) => {
             if (error.response) {
                 message.error(error.response.data.message)
             } else {
-                message.error(error.message + " 💀")
+                message.error(error.message)
             }
         }).then(() => {
             dispatch(loadingAction(false))
