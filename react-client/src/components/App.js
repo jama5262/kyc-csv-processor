@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 
-import { uploadCSVAction, getKYCsAction } from "../redux/actions"
+import { uploadCSVAction, getKYCsAction, getSamplesAction } from "../redux/actions"
 
 import {
   BrowserRouter as Router,
@@ -28,6 +28,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getKYCsAction())
+    dispatch(getSamplesAction())
   }, [])
 
   const uploadConfig = {

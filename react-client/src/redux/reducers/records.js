@@ -1,23 +1,6 @@
 import { ADD_ALL_RECORDS, ADD_RECORD, DELETE_RECORD } from "../../utils/actionConstants"
 
-const initialState = {
-    "1": [
-        {
-            id: "1",
-            key: "1",
-            name: "John Doe",
-            phone: "0790749401",
-            dobTimestamp: 1618507195000
-        },
-        {
-            id: "2",
-            key: "2",
-            name: "Diana Doe",
-            phone: "0712345678",
-            dobTimestamp: 1618507195000
-        }
-    ]
-}
+const initialState = {}
 
 export const records = (state = initialState, action) => {
     switch (action.type) {

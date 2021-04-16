@@ -2,16 +2,38 @@ import axios from "axios";
 
 import { BASE_URL } from "../../utils/baseUrlConstant"
 import * as types from "../../utils/actionConstants"
-import { kyc } from "../reducers/kyc";
-import { records } from "../reducers/records";
 
-export const addSamplesAction = samples => ({ type: types.ADD_SAMPLES, samples })
+export const getSamplesAction = samples => {
+    return (dispatch, _) => {
+        axios({
+            method: 'GET',
+            baseURL: BASE_URL,
+            url: "/all-samples",
+        }).then((response) => {
+            response.data.forEach((fileName) => {
+                dispatch({ type: types.ADD_SAMPLES, fileName })
+            })
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+}
 
 export const addKycAction = kyc => ({ type: types.ADD_KYC, kyc })
 
 export const deleteKycAction = id => {
     return (dispatch, getState) => {
-        // dispatch({ type: types.ADD_KYC, kyc })
+        axios({
+            method: 'DELETE',
+            baseURL: BASE_URL,
+            url: `/${id}`,
+        }).then((response) => {
+            console.log(id);
+            console.log(response);
+            dispatch({ type: types.DELETE_KYC, id })
+        }).catch((err) => {
+            console.log(err);
+        })
     }
 }
 
@@ -47,17 +69,37 @@ export const sampleCSVAction = fileName => {
     }
 }
 
+const addKyc = (data) => {
+    return (dispatch, _) => {
+        let { id, name, fileName, records } = data
+
+        dispatch(addKycAction({
+            id,
+            name,
+            fileName,
+            recordCount: records.length
+        }))
+
+        dispatch(addRecordsAction({
+            id,
+            records: records.map((v) => {
+                v["key"] = v.id
+                return v
+            })
+        }))
+    }
+}
+
 export const uploadCSVAction = (name, file) => {
     var formData = new FormData();
     formData.append('name', name);
     formData.append('file', file);
 
     console.log("send to server");
-    return (dispatch, getState) => {
+    return (dispatch, _) => {
         var formData = new FormData();
         formData.append('name', name);
         formData.append('file', file);
-
         axios({
             method: 'POST',
             baseURL: BASE_URL,
@@ -65,27 +107,7 @@ export const uploadCSVAction = (name, file) => {
             data: formData,
             headers: { "Content-Type": "multipart/form-data" }
         }).then((response) => {
-            let data = response.data
-
-            let { id, name, fileName, records } = data
-
-            dispatch(addKycAction({
-                id,
-                name,
-                fileName,
-                recordCount: records.length
-            }))
-
-            dispatch(addRecordsAction({
-                kycId: id,
-                records: records.map((k, v) => {
-                    v["key"] = v.id
-                    return v
-                })
-            }))
-
-            console.log("done");
-
+            dispatch(addKyc(response.data))
         }).catch((err) => {
             console.log(err);
         })
@@ -93,40 +115,14 @@ export const uploadCSVAction = (name, file) => {
 }
 
 export const getKYCsAction = () => {
-    return (dispatch, getState) => {
-
-        console.log("called");
-
+    return (dispatch, _) => {
         axios({
             method: 'GET',
             baseURL: BASE_URL,
         }).then((response) => {
-            let data = response.data
-
-            data.forEach(el => {
-                let { id, name, fileName, records } = el
-
-                let b = {
-                    id,
-                    name,
-                    fileName,
-                    recordCount: records.length
-                }
-
-                let a = {
-                    id,
-                    records: records.map((v) => {
-                        v["key"] = v.id
-                        return v
-                    })
-                }
-
-                console.log(b);
-                dispatch(addKycAction(b))
-                dispatch(addRecordsAction(a))
+            response.data.forEach(el => {
+                dispatch(addKyc(el))
             });
-
-            console.log("done");
         }).catch((err) => {
             console.log(err);
         })

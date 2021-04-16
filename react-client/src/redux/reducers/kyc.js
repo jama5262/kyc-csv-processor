@@ -1,26 +1,9 @@
-import { ADD_ALL_KYC, ADD_KYC, DELETE_KYC } from "../../utils/actionConstants"
+import { ADD_KYC, DELETE_KYC } from "../../utils/actionConstants"
 
-const initialState = [
-    {
-        id: "1",
-        name: "Students",
-        fileName: "students.csv",
-        recordCount: 20
-    },
-    {
-        id: "2",
-        name: "Teachers",
-        fileName: "teachers.csv",
-        recordCount: 2
-    },
-]
+const initialState = []
 
 export const kyc = (state = initialState, action) => {
     switch (action.type) {
-        case ADD_ALL_KYC:
-            state = [...state]
-            state.push(...action.kyc)
-            break
         case ADD_KYC:
             state = [...state]
             state.push(action.kyc)
