@@ -1,4 +1,4 @@
-import { ADD_KYC, DELETE_KYC } from "../../utils/actionConstants"
+import { ADD_ALL_KYC, ADD_KYC, DELETE_KYC } from "../../utils/actionConstants"
 
 const initialState = [
     {
@@ -17,6 +17,10 @@ const initialState = [
 
 export const kyc = (state = initialState, action) => {
     switch (action.type) {
+        case ADD_ALL_KYC:
+            state = [...state]
+            state.push(...action.kyc)
+            break
         case ADD_KYC:
             state = [...state]
             state.push(action.kyc)
