@@ -13,6 +13,7 @@ import Samples from "./Samples";
 import KYC from "./KYC";
 import Records from "./Records";
 import UploadCSV from "./UploadCSV";
+import Loading from "./Loading";
 
 
 import { Layout, PageHeader, Row, Col, Button } from 'antd'
@@ -34,6 +35,7 @@ function App() {
 
   return (
     <Layout>
+      <Loading />
       <UploadCSV />
       <PageHeader
         className="site-page-header"

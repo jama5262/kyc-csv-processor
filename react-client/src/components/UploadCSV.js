@@ -3,20 +3,29 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { uploadCSVAction, showUploadModalAction } from "../redux/actions"
 
-import { Row, Button, Input, Upload, Modal } from 'antd'
+import { Row, Button, Input, Upload, Modal, message } from 'antd'
 
 const UploadCSV = () => {
 
     const showModal = useSelector(state => state.uploadCSV.showModal)
     let [name, setName] = useState("")
-    let [file, setFile] = useState(undefined)
+    let [file, setFile] = useState([])
 
     let dispatch = useDispatch()
 
     const handleUpload = () => {
-        if (file === undefined) return
-        dispatch(uploadCSVAction(name, file))
+        if (file === undefined) {
+            message.error('Please upload a CSV file');
+            return
+        }
+        if (name === "") {
+            message.error('Please add a name for kyc');
+            return
+        }
+        dispatch(uploadCSVAction(name, file[0]))
         dispatch(showUploadModalAction(false))
+        setName("")
+        setFile([])
     }
 
     const handleCancelModal = () => {
@@ -24,7 +33,7 @@ const UploadCSV = () => {
     }
 
     const handleFetchCSV = (info) => {
-        setFile(info.file)
+        setFile([info.file])
     }
 
     return (
@@ -33,8 +42,11 @@ const UploadCSV = () => {
                 <Input placeholder="Name" value={name} onChange={(e) => {
                     setName(e.target.value)
                 }} />
-                <Upload beforeUpload={() => false}
-                    onChange={handleFetchCSV}>
+                <Upload
+                    beforeUpload={() => false}
+                    onChange={handleFetchCSV}
+                    fileList={file}
+                >
                     <Button>Click to Upload</Button>
                 </Upload>
             </Row>

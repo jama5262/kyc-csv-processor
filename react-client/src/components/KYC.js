@@ -45,7 +45,7 @@ const KYC = () => {
                         <Row justify="space-between" align="bottom">
                             <Col>
                                 <p>File name: <Text strong>{kyc.fileName}</Text></p>
-                                <p>No. of records: <Text strong>22</Text></p>
+                                <p>No. of records: <Text strong>{kyc.recordCount}</Text></p>
                             </Col>
                             <Col>
                                 <Button type="primary" onClick={() => {

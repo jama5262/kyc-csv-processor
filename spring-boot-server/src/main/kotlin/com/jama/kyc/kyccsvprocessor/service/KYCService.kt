@@ -3,9 +3,8 @@ package com.jama.kyc.kyccsvprocessor.service
 import com.jama.kyc.kyccsvprocessor.model.KYC
 import com.jama.kyc.kyccsvprocessor.model.Record
 import com.jama.kyc.kyccsvprocessor.repository.KYCRepository
-import com.jama.kyc.kyccsvprocessor.utils.Constants
-import com.jama.kyc.kyccsvprocessor.utils.Constants.CSV_IMPORT_FAILED_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.Constants.DELETE_RECORD_EXCEPTION
+import com.jama.kyc.kyccsvprocessor.utils.Constants.INVALID_FILE_FAILED_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.Constants.KYC_NOT_FOUND_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.Constants.PATH_NOT_FOUND_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.Constants.SAMPLES_PATH
@@ -30,18 +29,17 @@ class KYCService {
     private lateinit var mongoTemplate: MongoTemplate
 
     fun uploadCSV(file: MultipartFile, name: String): KYC {
-        try {
-            val fileName = file.originalFilename!!
-            val records = String(file.bytes).records()
-            val kyc = KYC(
-                name = name,
-                fileName = fileName,
-                records = records.toMutableList()
-            )
-            return addKYC(kyc)
-        } catch (e: Exception) {
-            throw Exception(CSV_IMPORT_FAILED_EXCEPTION)
+        val fileName = file.originalFilename!!
+        if (fileName.takeLast(4) != ".csv") {
+            throw Exception(INVALID_FILE_FAILED_EXCEPTION)
         }
+        val records = String(file.bytes).records()
+        val kyc = KYC(
+            name = name,
+            fileName = fileName,
+            records = records.toMutableList()
+        )
+        return addKYC(kyc)
     }
 
     fun uploadSampleCSV(fileName: String, name: String): KYC {

@@ -3,6 +3,8 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/baseUrlConstant"
 import * as types from "../../utils/actionConstants"
 
+import { message } from 'antd'
+
 export const getSamplesAction = () => {
     return (dispatch, _) => {
         axios({
@@ -14,7 +16,7 @@ export const getSamplesAction = () => {
                 dispatch({ type: types.ADD_SAMPLES, fileName })
             })
         }).catch((err) => {
-            console.log(err);
+            message.error("Oop, there was an error fetching the samples");
         })
     }
 }
@@ -28,8 +30,6 @@ export const deleteKycAction = id => {
             baseURL: BASE_URL,
             url: `/${id}`,
         }).then((response) => {
-            console.log(id);
-            console.log(response);
             dispatch({ type: types.DELETE_KYC, id })
         }).catch((err) => {
             console.log(err);
@@ -93,15 +93,15 @@ const addKyc = (data) => {
 }
 
 export const uploadCSVAction = (name, file) => {
-    var formData = new FormData();
-    formData.append('name', name);
-    formData.append('file', file);
 
-    console.log("send to server");
     return (dispatch, _) => {
+
+        dispatch(loadingAction(true))
+
         var formData = new FormData();
         formData.append('name', name);
         formData.append('file', file);
+
         axios({
             method: 'POST',
             baseURL: BASE_URL,
@@ -110,14 +110,23 @@ export const uploadCSVAction = (name, file) => {
             headers: { "Content-Type": "multipart/form-data" }
         }).then((response) => {
             dispatch(addKyc(response.data))
-        }).catch((err) => {
-            console.log(err);
+        }).catch((error) => {
+            if (error.response) {
+                message.error(error.response.data.message)
+            } else {
+                message.error(error.message + " 💀")
+            }
+        }).then(() => {
+            dispatch(loadingAction(false))
         })
     }
 }
 
 export const getKYCsAction = () => {
     return (dispatch, _) => {
+
+        dispatch(loadingAction(true))
+
         axios({
             method: 'GET',
             baseURL: BASE_URL,
@@ -127,6 +136,8 @@ export const getKYCsAction = () => {
             });
         }).catch((err) => {
             console.log(err);
+        }).then(() => {
+            dispatch(loadingAction(false))
         })
     }
 }

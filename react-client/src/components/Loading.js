@@ -1,11 +1,16 @@
-import React from 'react'
+import { useSelector } from "react-redux";
 
-const Loading = ({ loading }) => {
+import { Modal, Spin, Row } from 'antd'
+
+const Loading = () => {
+
+    const showLoading = useSelector(state => state.loading.showLoading)
+
     return (
-        <Modal title="Basic Modal" visible={loading}>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+        <Modal title={"Processing"} visible={showLoading} footer={null} closable={false}>
+            <Row justify="center">
+                <Spin size="large" />
+            </Row>
         </Modal>
     )
 }
