@@ -33,11 +33,15 @@ export const getSamples = () => {
 
 export const addRecord = payload => ({ type: types.ADD_RECORD, payload })
 export const updateRecord = payload => ({ type: types.UPDATE_RECORD, payload })
+export const updateRecordCount = payload => ({ type: types.UPDATE_RECORD_COUNT, payload })
 export const deleteRecord = id => ({ type: types.DELETE_RECORD, payload: { id } })
 
 
 export const requestAddRecord = (kycId, record) => {
     return (dispatch, _) => {
+
+        dispatch(loadingAction(true))
+
         axios({
             method: 'POST',
             baseURL: BASE_URL,
@@ -48,8 +52,15 @@ export const requestAddRecord = (kycId, record) => {
             record["key"] = record.id
             record["kycId"] = kycId
             dispatch(addRecord(record))
-        }).catch((err) => {
-            console.log(err.message);
+            dispatch(updateRecordCount({ kycId, increament: 1 }))
+        }).catch((error) => {
+            if (error.response) {
+                message.error(error.response.data.message)
+            } else {
+                message.error(error.message)
+            }
+        }).then(() => {
+            dispatch(loadingAction(false))
         })
     }
 
@@ -57,6 +68,9 @@ export const requestAddRecord = (kycId, record) => {
 
 export const requestUpdateRecord = (kycId, record) => {
     return (dispatch, getState) => {
+
+        dispatch(loadingAction(true))
+
         axios({
             method: 'PUT',
             baseURL: BASE_URL,
@@ -64,22 +78,38 @@ export const requestUpdateRecord = (kycId, record) => {
             url: `/${kycId}`,
         }).then((response) => {
             dispatch(updateRecord(record))
-        }).catch((err) => {
-            console.log(err.message);
+        }).catch((error) => {
+            if (error.response) {
+                message.error(error.response.data.message)
+            } else {
+                message.error(error.message)
+            }
+        }).then(() => {
+            dispatch(loadingAction(false))
         })
     }
 }
 
 export const requestDeleteRecord = (kycId, recordId) => {
     return (dispatch, _) => {
+
+        dispatch(loadingAction(true))
+
         axios({
             method: 'DELETE',
             baseURL: BASE_URL,
             url: `/${kycId}/${recordId}`,
         }).then(() => {
             dispatch(deleteRecord(recordId))
-        }).catch((err) => {
-            console.log(err);
+            dispatch(updateRecordCount({ kycId, increament: -1 }))
+        }).catch((error) => {
+            if (error.response) {
+                message.error(error.response.data.message)
+            } else {
+                message.error(error.message)
+            }
+        }).then(() => {
+            dispatch(loadingAction(false))
         })
     }
 }
@@ -102,14 +132,23 @@ const addKyc = (data) => {
 
 export const deleteKyc = id => {
     return (dispatch, _) => {
+
+        dispatch(loadingAction(true))
+
         axios({
             method: 'DELETE',
             baseURL: BASE_URL,
             url: `/${id}`,
         }).then(() => {
             dispatch({ type: types.DELETE_KYC, payload: { id } })
-        }).catch((err) => {
-            console.log(err);
+        }).catch((error) => {
+            if (error.response) {
+                message.error(error.response.data.message)
+            } else {
+                message.error(error.message)
+            }
+        }).then(() => {
+            dispatch(loadingAction(false))
         })
     }
 }
@@ -184,8 +223,12 @@ export const getKYCsAction = () => {
             response.data.forEach(el => {
                 dispatch(addKyc(el))
             });
-        }).catch((err) => {
-            console.log(err);
+        }).catch((error) => {
+            if (error.response) {
+                message.error(error.response.data.message)
+            } else {
+                message.error(error.message)
+            }
         }).then(() => {
             dispatch(loadingAction(false))
         })
