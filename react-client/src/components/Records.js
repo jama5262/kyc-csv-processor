@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
+import { requestDeleteRecord, requestAddRecord, requestUpdateRecord } from "../redux/actions"
 
 import { Table, Row, Col, Button, Modal, Input, DatePicker } from 'antd'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+
 
 import moment from 'moment';
 
@@ -11,32 +14,50 @@ const Records = () => {
 
     let { kycId } = useParams();
     let history = useHistory();
-    const records = useSelector(state => state.records[kycId])
+    let records = useSelector(state => state.records.filter((record) => {
+        return record.kycId === kycId
+    }))
 
     let [showModal, setShowModal] = useState(false)
     let [record, setRecord] = useState({})
+    let [update, setUpdate] = useState(false)
+    let [modaltitle, setModaltitle] = useState("")
+
+    const dispatch = useDispatch()
 
     const handleBack = () => {
         history.goBack()
     }
 
-    const handleOk = () => {
-
+    const handleCancelModal = () => {
         setShowModal(false)
     }
 
-    const handleCancel = () => {
+    const handleAddUpdateRecord = () => {
+        if (update) {
+            dispatch(requestUpdateRecord(kycId, record))
+        } else {
+            dispatch(requestAddRecord(kycId, record))
+        }
         setShowModal(false)
     }
 
     const handleAddRecord = () => {
         setRecord({})
+        setModaltitle("Add record")
+        setUpdate(false)
         setShowModal(true)
     }
 
     const handleUpdateRecord = (oldRecord) => {
         setRecord(oldRecord)
+        setModaltitle("Update record")
+        setUpdate(true)
         setShowModal(true)
+    }
+
+    const handleDeleteRecord = (recordId) => {
+        dispatch(requestDeleteRecord(kycId, recordId))
     }
 
     const columns = [
@@ -54,6 +75,7 @@ const Records = () => {
             title: 'Date of birth',
             dataIndex: 'dobTimestamp',
             key: 'dobTimestamp',
+            render: (text, record) => moment(record.dobTimestamp).format("Do MMM, yyyy")
         },
         {
             key: 'action',
@@ -62,15 +84,19 @@ const Records = () => {
                     <Button type="text" onClick={() => {
                         handleUpdateRecord(record)
                     }}><EditOutlined /></Button>
-                    <Button type="text"><DeleteOutlined /></Button>
+                    <Button type="text" onClick={() => {
+                        handleDeleteRecord(record.id)
+                    }}><DeleteOutlined /></Button>
                 </div>
             ),
         }
     ];
 
+
+
     return (
         <div>
-            <Modal title="Basic Modal" visible={showModal} onOk={handleOk} onCancel={handleCancel}>
+            <Modal title={modaltitle} visible={showModal} onOk={handleAddUpdateRecord} onCancel={handleCancelModal}>
                 <Row gutter={[0, 20]}>
                     <Input placeholder="Full names" value={record.name} onChange={(e) => {
                         setRecord({ ...record, name: e.target.value })

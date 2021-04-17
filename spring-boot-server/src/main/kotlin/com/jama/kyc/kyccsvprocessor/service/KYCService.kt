@@ -10,6 +10,9 @@ import com.jama.kyc.kyccsvprocessor.utils.Constants.PATH_NOT_FOUND_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.Constants.SAMPLES_PATH
 import com.jama.kyc.kyccsvprocessor.utils.Constants.UPDATE_RECORD_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.records
+import com.mongodb.client.result.UpdateResult
+import org.bson.BsonValue
+import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -82,11 +85,16 @@ class KYCService {
         return repository.deleteById(id)
     }
 
-    fun addRecord(id: String, record: Record) {
-        val query = Query(Criteria.where("id").`is`(id))
-        val update = Update()
-        update.push("records", record)
-        mongoTemplate.updateFirst(query, update, KYC::class.java)
+    fun addRecord(id: String, record: Record): Document {
+        try {
+            val query = Query(Criteria.where("id").`is`(id))
+            val update = Update()
+            val newRecord = update.push("records", record).updateObject
+            mongoTemplate.updateFirst(query, update, KYC::class.java)
+            return newRecord
+        } catch (e: Exception) {
+            throw Exception(e.message)
+        }
     }
 
     fun updateRecord(id: String, record: Record) {

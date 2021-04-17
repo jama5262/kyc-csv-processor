@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 
-import { uploadCSVAction, getKYCsAction, getSamplesAction, showUploadModalAction } from "../redux/actions"
+import { getKYCsAction, getSamples, showUploadModalAction } from "../redux/actions"
 
 import {
   BrowserRouter as Router,
@@ -26,7 +26,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getKYCsAction())
-    dispatch(getSamplesAction())
+    dispatch(getSamples())
   }, [])
 
   const handleShowModal = () => {

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 
-import { sampleCSVAction, showUploadSampleModalAction } from "../redux/actions"
+import { requestSampleCSV, showUploadSampleModalAction } from "../redux/actions"
 
 import { Row, Input, Modal, message } from 'antd'
 
@@ -18,7 +18,7 @@ const UploadSampleCSV = () => {
             message.error('Please add a name for kyc');
             return
         }
-        dispatch(sampleCSVAction(name, fileName))
+        dispatch(requestSampleCSV(name, fileName))
         dispatch(showUploadSampleModalAction(false))
         setName("")
     }

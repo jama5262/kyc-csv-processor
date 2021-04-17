@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { useHistory } from "react-router-dom";
 
-import { deleteKycAction, showUploadModalAction } from "../redux/actions"
+import { deleteKyc, showUploadModalAction } from "../redux/actions"
 
 import UploadCSV from "./UploadCSV";
 
@@ -24,7 +24,7 @@ const KYC = () => {
     }
 
     const handleDeleteKyc = (id) => {
-        dispatch(deleteKycAction(id))
+        dispatch(deleteKyc(id))
     }
 
     const handleShowModal = () => {

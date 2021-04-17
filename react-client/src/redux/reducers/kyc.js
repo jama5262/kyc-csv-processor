@@ -4,21 +4,18 @@ const initialState = []
 
 export const kyc = (state = initialState, action) => {
     switch (action.type) {
-        case ADD_KYC:
-            state = [...state]
-            state.push(action.kyc)
-            break
-        case DELETE_KYC:
-            state = [...state]
-            let kycPos = state.findIndex(kyc => {
-                return kyc.id === action.id
+        case ADD_KYC: {
+            let newState = [...state]
+            newState.push(action.payload)
+            return newState
+        }
+        case DELETE_KYC: {
+            let newState = [...state]
+            return newState.filter((kyc) => {
+                return kyc.id !== action.payload.id
             })
-            if (kycPos >= 0) {
-                state.splice(kycPos, 1)
-            }
-            break
+        }
         default:
-            break
+            return state
     }
-    return state
 }

@@ -5,14 +5,13 @@ const initialState = []
 export const samples = (state = initialState, action) => {
     switch (action.type) {
         case ADD_SAMPLES:
-            state = [...state]
-            state.push({
+            let newState = [...state]
+            newState.push({
                 id: state.length + 1,
-                fileName: action.fileName
+                fileName: action.payload.fileName
             })
-            break
+            return newState
         default:
-            break
+            return state
     }
-    return state
 }

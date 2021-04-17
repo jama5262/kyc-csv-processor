@@ -5,60 +5,7 @@ import * as types from "../../utils/actionConstants"
 
 import { message } from 'antd'
 
-export const getSamplesAction = () => {
-    return (dispatch, _) => {
-        axios({
-            method: 'GET',
-            baseURL: BASE_URL,
-            url: "/all-samples",
-        }).then((response) => {
-            response.data.forEach((fileName) => {
-                dispatch({ type: types.ADD_SAMPLES, fileName })
-            })
-        }).catch((err) => {
-            message.error("Oop, there was an error fetching the samples");
-        })
-    }
-}
-
-export const addKycAction = kyc => ({ type: types.ADD_KYC, kyc })
-
-export const deleteKycAction = id => {
-    return (dispatch, getState) => {
-        axios({
-            method: 'DELETE',
-            baseURL: BASE_URL,
-            url: `/${id}`,
-        }).then((response) => {
-            dispatch({ type: types.DELETE_KYC, id })
-        }).catch((err) => {
-            console.log(err);
-        })
-    }
-}
-
-export const addRecordsAction = records => ({ type: types.ADD_ALL_RECORDS, data: records })
-
-export const addRecordAction = record => {
-    return (dispatch, getState) => {
-        dispatch({ type: types.ADD_RECORD, data: record })
-    }
-
-}
-
-export const updateRecordAction = record => {
-    return (dispatch, getState) => {
-        // dispatch({ type: types.UPDATE_RECORD, ids })
-    }
-}
-
-export const deleteRecordAction = ids => {
-    return (dispatch, getState) => {
-        dispatch({ type: types.DELETE_RECORD, ids })
-    }
-}
-
-export const loadingAction = showLoading => ({ type: types.LOADING, showLoading })
+export const loadingAction = showLoading => ({ type: types.LOADING, payload: { showLoading } })
 
 export const showUploadModalAction = showModal => ({ type: types.SHOW_MODAL, showModal })
 
@@ -66,28 +13,108 @@ export const showUploadSampleModalAction = showSampleModal => ({ type: types.SHO
 
 export const setFileNameAction = fileName => ({ type: types.SET_FILE_NAME, fileName })
 
+export const addSamples = payload => ({ type: types.ADD_SAMPLES, payload })
+
+export const getSamples = () => {
+    return (dispatch, _) => {
+        axios({
+            method: 'GET',
+            baseURL: BASE_URL,
+            url: "/all-samples",
+        }).then((response) => {
+            response.data.forEach((fileName) => {
+                dispatch(addSamples({ fileName }))
+            })
+        }).catch((err) => {
+            message.error("Oop, there was an error fetching the samples");
+        })
+    }
+}
+
+export const addRecord = payload => ({ type: types.ADD_RECORD, payload })
+export const updateRecord = payload => ({ type: types.UPDATE_RECORD, payload })
+export const deleteRecord = id => ({ type: types.DELETE_RECORD, payload: { id } })
+
+
+export const requestAddRecord = (kycId, record) => {
+    return (dispatch, _) => {
+        axios({
+            method: 'POST',
+            baseURL: BASE_URL,
+            data: record,
+            url: `/${kycId}`,
+        }).then((response) => {
+            let record = response.data["$push"].records
+            record["key"] = record.id
+            record["kycId"] = kycId
+            dispatch(addRecord(record))
+        }).catch((err) => {
+            console.log(err.message);
+        })
+    }
+
+}
+
+export const requestUpdateRecord = (kycId, record) => {
+    return (dispatch, getState) => {
+        axios({
+            method: 'PUT',
+            baseURL: BASE_URL,
+            data: record,
+            url: `/${kycId}`,
+        }).then((response) => {
+            dispatch(updateRecord(record))
+        }).catch((err) => {
+            console.log(err.message);
+        })
+    }
+}
+
+export const requestDeleteRecord = (kycId, recordId) => {
+    return (dispatch, _) => {
+        axios({
+            method: 'DELETE',
+            baseURL: BASE_URL,
+            url: `/${kycId}/${recordId}`,
+        }).then(() => {
+            dispatch(deleteRecord(recordId))
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+}
+
 const addKyc = (data) => {
     return (dispatch, _) => {
         let { id, name, fileName, records } = data
 
-        dispatch(addKycAction({
-            id,
-            name,
-            fileName,
-            recordCount: records.length
-        }))
+        dispatch({ type: types.ADD_KYC, payload: { id, name, fileName, recordCount: records.length } })
 
-        dispatch(addRecordsAction({
-            id,
-            records: records.map((v) => {
-                v["key"] = v.id
-                return v
-            })
-        }))
+        records.forEach((record) => {
+            dispatch(addRecord({
+                ...record,
+                "key": record.id,
+                "kycId": id
+            }))
+        })
     }
 }
 
-export const sampleCSVAction = (name, fileName) => {
+export const deleteKyc = id => {
+    return (dispatch, _) => {
+        axios({
+            method: 'DELETE',
+            baseURL: BASE_URL,
+            url: `/${id}`,
+        }).then(() => {
+            dispatch({ type: types.DELETE_KYC, payload: { id } })
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+}
+
+export const requestSampleCSV = (name, fileName) => {
     return (dispatch, _) => {
 
         dispatch(loadingAction(true))
@@ -114,9 +141,7 @@ export const sampleCSVAction = (name, fileName) => {
     }
 }
 
-
-
-export const uploadCSVAction = (name, file) => {
+export const requestUploadCSV = (name, file) => {
 
     return (dispatch, _) => {
 
@@ -133,6 +158,7 @@ export const uploadCSVAction = (name, file) => {
             data: formData,
             headers: { "Content-Type": "multipart/form-data" }
         }).then((response) => {
+            console.log(response.data);
             dispatch(addKyc(response.data))
         }).catch((error) => {
             if (error.response) {
