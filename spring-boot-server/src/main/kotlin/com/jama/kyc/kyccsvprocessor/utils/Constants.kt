@@ -2,8 +2,6 @@ package com.jama.kyc.kyccsvprocessor.utils
 
 object Constants {
 
-    const val API_ENDPOINT = "api/kyc"
-
     const val SAMPLES_PATH = "src/main/resources/samples/"
 
     val csvHeaders = listOf("name", "phone", "dobTimestamp")
