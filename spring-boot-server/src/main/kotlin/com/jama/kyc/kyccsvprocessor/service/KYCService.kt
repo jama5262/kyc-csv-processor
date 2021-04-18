@@ -4,11 +4,11 @@ import com.jama.kyc.kyccsvprocessor.model.KYC
 import com.jama.kyc.kyccsvprocessor.model.Record
 import com.jama.kyc.kyccsvprocessor.model.Success
 import com.jama.kyc.kyccsvprocessor.repository.KYCRepository
-import com.jama.kyc.kyccsvprocessor.utils.Constants.INVALID_FILE_FAILED_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.Constants.KYC_NOT_FOUND_EXCEPTION
-import com.jama.kyc.kyccsvprocessor.utils.Constants.PATH_NOT_FOUND_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.Constants.SAMPLES_PATH
 import com.jama.kyc.kyccsvprocessor.utils.records
+import com.jama.kyc.kyccsvprocessor.validate.Validate.validateFileExtension
+import com.jama.kyc.kyccsvprocessor.validate.Validate.validateSampleFileExists
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
@@ -22,9 +22,7 @@ class KYCService {
 
     fun uploadCSV(file: MultipartFile, name: String): KYC {
         val fileName = file.originalFilename!!
-        if (fileName.takeLast(4) != ".csv") {
-            throw Exception(INVALID_FILE_FAILED_EXCEPTION)
-        }
+        validateFileExtension(fileName)
         val records = String(file.bytes).records()
         val kyc = KYC(
             name = name,
@@ -35,17 +33,16 @@ class KYCService {
     }
 
     fun uploadSampleCSV(fileName: String, name: String): KYC {
-        try {
-            val records = File("$SAMPLES_PATH$fileName").records()
-            val kyc = KYC(
-                name = name,
-                fileName = fileName,
-                records = records
-            )
-            return addKYC(kyc)
-        } catch (e: Exception) {
-            throw Exception(PATH_NOT_FOUND_EXCEPTION)
-        }
+        validateFileExtension(fileName)
+        val path = "$SAMPLES_PATH$fileName"
+        validateSampleFileExists(fileName)
+        val records = File(path).records()
+        val kyc = KYC(
+            name = name,
+            fileName = fileName,
+            records = records
+        )
+        return addKYC(kyc)
     }
 
     fun getAllSampleFiles(): List<String> {
