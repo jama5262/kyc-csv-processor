@@ -4,6 +4,9 @@ import com.jama.kyc.kyccsvprocessor.model.KYC
 import com.jama.kyc.kyccsvprocessor.model.Record
 import com.jama.kyc.kyccsvprocessor.model.Success
 import com.jama.kyc.kyccsvprocessor.utils.Constants
+import com.jama.kyc.kyccsvprocessor.utils.Constants.ADD_RECORD_EXCEPTION
+import com.jama.kyc.kyccsvprocessor.utils.Constants.DELETE_RECORD_EXCEPTION
+import com.jama.kyc.kyccsvprocessor.utils.Constants.UPDATE_RECORD_EXCEPTION
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -23,7 +26,7 @@ class KYCRepositoryImpl {
             mongoTemplate.findAndModify(query, update, KYC::class.java)
             return Success(record)
         } catch (e: Exception) {
-            throw Exception(Constants.ADD_RECORD_EXCEPTION)
+            throw Exception(ADD_RECORD_EXCEPTION)
         }
     }
 
@@ -33,7 +36,7 @@ class KYCRepositoryImpl {
             addRecord(id, record)
             return Success(record)
         } catch (e: Exception) {
-            throw Exception(Constants.UPDATE_RECORD_EXCEPTION)
+            throw Exception(UPDATE_RECORD_EXCEPTION)
         }
     }
 
@@ -43,7 +46,7 @@ class KYCRepositoryImpl {
         val update = Update()
         update.pull("records", updateQuery)
         val modifiedCount = mongoTemplate.updateMulti(query, update, KYC::class.java).modifiedCount
-        if (modifiedCount == 0L) throw Exception(Constants.DELETE_RECORD_EXCEPTION)
+        if (modifiedCount == 0L) throw Exception(DELETE_RECORD_EXCEPTION)
         return Success(recordId)
     }
 }
