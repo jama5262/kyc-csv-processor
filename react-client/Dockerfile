@@ -1,11 +1,11 @@
-FROM node:14-slim
+FROM node:alpine
 
 WORKDIR /build
 
-COPY . .
+COPY package.json .
 
 RUN npm install
 
-EXPOSE 3000
+COPY . .
 
 CMD ["npm", "start"]
