@@ -2,14 +2,13 @@ package com.jama.kyc.kyccsvprocessor.controller
 
 import com.jama.kyc.kyccsvprocessor.model.Record
 import com.jama.kyc.kyccsvprocessor.service.KYCService
-import com.jama.kyc.kyccsvprocessor.utils.Constants.API_ENDPOINT
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"])
-@RequestMapping(path = [API_ENDPOINT])
+@RequestMapping(path = ["api/kyc"])
 class KYCController {
 
     @Autowired
