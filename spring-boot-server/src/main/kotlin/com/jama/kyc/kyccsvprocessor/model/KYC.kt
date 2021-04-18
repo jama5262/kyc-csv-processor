@@ -9,5 +9,5 @@ data class KYC(
     val id: String? = null,
     val name: String,
     val fileName: String,
-    val records: MutableList<Record>
+    val records: List<Record>
 )

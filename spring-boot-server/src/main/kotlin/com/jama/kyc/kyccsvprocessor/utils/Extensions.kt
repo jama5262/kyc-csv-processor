@@ -4,7 +4,7 @@ import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import com.jama.kyc.kyccsvprocessor.model.Record
 import java.io.File
 
-fun String.records(): MutableList<Record> {
+fun String.records(): List<Record> {
     return csvReader()
         .readAll(this)
         .drop(1) // Drop the first row containing the headers
@@ -14,10 +14,10 @@ fun String.records(): MutableList<Record> {
                 phone = it[1],
                 dobTimestamp = it[2].toLong()
             )
-        }.toMutableList()
+        }
 }
 
-fun File.records(): MutableList<Record> {
+fun File.records(): List<Record> {
     return csvReader()
         .readAll(this)
         .drop(1) // Drop the first row containing the headers
@@ -27,5 +27,5 @@ fun File.records(): MutableList<Record> {
                 phone = it[1],
                 dobTimestamp = it[2].toLong()
             )
-        }.toMutableList()
+        }
 }
