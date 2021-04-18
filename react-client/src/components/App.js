@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from 'react'
+import { useDispatch } from "react-redux";
 
-import { getKYCsAction, getSamples, showUploadModalAction } from "../redux/actions"
+import { getKYCs, getSamples, showUploadModalAction } from "../redux/actions"
 
 import {
   BrowserRouter as Router,
@@ -25,7 +25,7 @@ function App() {
   let dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getKYCsAction())
+    dispatch(getKYCs())
     dispatch(getSamples())
   }, [])
 
@@ -39,7 +39,7 @@ function App() {
       <UploadCSV />
       <PageHeader
         className="site-page-header"
-        title="Title"
+        title="Process KYC CSV files"
         extra={[
           <Button key="1" type="primary" onClick={handleShowModal}>
             Upload CSV

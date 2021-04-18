@@ -1,25 +1,28 @@
 import React from 'react'
 import { useSelector, useDispatch } from "react-redux";
 
+import moment from 'moment';
+
 import { useHistory } from "react-router-dom";
 
 import { deleteKyc, showUploadModalAction } from "../redux/actions"
 
 import UploadCSV from "./UploadCSV";
 
-import { Row, Col, List, Card, Empty, Button, Typography } from 'antd'
+import { Row, Col, List, Card, Empty, Button, Typography, Table, Space } from 'antd'
 import { DeleteOutlined } from '@ant-design/icons'
 const { Text } = Typography;
 
 
 const KYC = () => {
 
+    let history = useHistory()
+
     const kycs = useSelector(state => state.kyc)
-    let history = useHistory();
 
     let dispatch = useDispatch()
 
-    const handleChange = (id) => {
+    const handleRouteChange = (id) => {
         history.push(`/${id}`)
     }
 
@@ -49,7 +52,7 @@ const KYC = () => {
                             </Col>
                             <Col>
                                 <Button type="primary" onClick={() => {
-                                    handleChange(kyc.id)
+                                    handleRouteChange(kyc.id)
                                 }}>View</Button>
                             </Col>
                         </Row>
@@ -60,6 +63,35 @@ const KYC = () => {
         </List>
     )
 
+    const columns = [
+        {
+            title: 'Full name',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
+            title: 'Phone number',
+            dataIndex: 'phone',
+            key: 'phone',
+        },
+        {
+            title: 'Date of birth',
+            dataIndex: 'dobTimestamp',
+            key: 'dobTimestamp',
+            render: (text, record) => moment(record.dobTimestamp).format("Do MMM, yyyy")
+        }
+    ];
+
+    const exampleData = [
+        {
+            id: "1",
+            key: "1",
+            name: "John Doe",
+            phone: "0712345678",
+            dobTimestamp: 0
+        }
+    ]
+
     const empty = (
         <Row
             justify="center"
@@ -69,9 +101,12 @@ const KYC = () => {
                 imageStyle={{
                     height: 60,
                 }}
-                description={<span>No KYCs</span>}
+                description={<span>No KYCs found, please upload one in the following format</span>}
             >
-                <Button type="primary" onClick={handleShowModal}>Upload CVS</Button>
+                <Space direction={"vertical"} size={"large"}>
+                    <Table pagination={false} dataSource={exampleData} columns={columns} />
+                    <Button type="primary" onClick={handleShowModal}>Upload CSV</Button>
+                </Space>
             </Empty>
         </Row>
     )

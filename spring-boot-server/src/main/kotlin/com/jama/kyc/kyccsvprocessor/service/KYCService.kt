@@ -3,6 +3,7 @@ package com.jama.kyc.kyccsvprocessor.service
 import com.jama.kyc.kyccsvprocessor.model.KYC
 import com.jama.kyc.kyccsvprocessor.model.Record
 import com.jama.kyc.kyccsvprocessor.repository.KYCRepository
+import com.jama.kyc.kyccsvprocessor.utils.Constants.ADD_RECORD_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.Constants.DELETE_RECORD_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.Constants.INVALID_FILE_FAILED_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.Constants.KYC_NOT_FOUND_EXCEPTION
@@ -93,7 +94,7 @@ class KYCService {
             mongoTemplate.updateFirst(query, update, KYC::class.java)
             return newRecord
         } catch (e: Exception) {
-            throw Exception(e.message)
+            throw Exception(ADD_RECORD_EXCEPTION)
         }
     }
 

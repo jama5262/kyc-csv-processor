@@ -211,7 +211,7 @@ export const requestUploadCSV = (name, file) => {
     }
 }
 
-export const getKYCsAction = () => {
+export const getKYCs = () => {
     return (dispatch, _) => {
 
         dispatch(loadingAction(true))

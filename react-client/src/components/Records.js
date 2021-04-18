@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { requestDeleteRecord, requestAddRecord, requestUpdateRecord } from "../redux/actions"
 
-import { Table, Row, Col, Button, Modal, Input, DatePicker } from 'antd'
+import { Table, Row, Col, Button, Modal, Input, DatePicker, message } from 'antd'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 
@@ -34,6 +34,10 @@ const Records = () => {
     }
 
     const handleAddUpdateRecord = () => {
+        if (Object.keys(record).length < 3 || record.name === "" || record.phone === "" || record.dobTimestamp === "") {
+            message.error('Please make sure all fields are filled');
+            return
+        }
         if (update) {
             dispatch(requestUpdateRecord(kycId, record))
         } else {
@@ -104,7 +108,7 @@ const Records = () => {
                     <Input placeholder="Phone" value={record.phone} onChange={(e) => {
                         setRecord({ ...record, phone: e.target.value })
                     }} />
-                    <DatePicker value={moment(record.dobTimestamp)} onChange={(date, _) => {
+                    <DatePicker onChange={(date, _) => {
                         if (date === null) return
                         setRecord({ ...record, dobTimestamp: moment(date).valueOf() })
                     }} />
