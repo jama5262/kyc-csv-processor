@@ -1,7 +1,10 @@
 package com.jama.kyc.kyccsvprocessor.utils
 
+import com.jama.kyc.kyccsvprocessor.utils.Constants.INVALID_CSV_FORMAT_EXCEPTION
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
+import java.io.File
 
 class ExtensionsKtTest {
 
@@ -18,10 +21,21 @@ class ExtensionsKtTest {
     }
 
     @Test
+    fun `test get list of records from csv file`() {
+        val path = "src/test/resources/samples/sample1.csv"
+        val csvFile = File(path)
+        val records = csvFile.records()
+        assertThat(records)
+            .hasSize(2)
+    }
+
+    @Test
     fun `test get list of records from empty string`() {
         val csvString = ""
-        val records = csvString.records()
-        assertThat(records).isEmpty()
+
+        assertThatThrownBy {
+            csvString.records()
+        }.hasMessage(INVALID_CSV_FORMAT_EXCEPTION)
     }
 
 }

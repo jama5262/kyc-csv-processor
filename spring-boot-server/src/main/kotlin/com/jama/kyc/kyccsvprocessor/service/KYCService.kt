@@ -35,7 +35,7 @@ class KYCService {
     fun uploadSampleCSV(fileName: String, name: String): KYC {
         validateFileExtension(fileName)
         val path = "$SAMPLES_PATH$fileName"
-        validateSampleFileExists(fileName)
+        validateSampleFileExists(path)
         val records = File(path).records()
         val kyc = KYC(
             name = name,

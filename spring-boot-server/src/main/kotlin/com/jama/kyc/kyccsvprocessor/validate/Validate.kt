@@ -8,6 +8,12 @@ import java.io.File
 
 object Validate {
 
+    fun validateIfCSVEmpty(records: List<List<String>>) {
+        if (records.isEmpty()) {
+            throw Exception(INVALID_CSV_FORMAT_EXCEPTION)
+        }
+    }
+
     fun validateCSVHeaders(records: List<String>) {
         if (records != Constants.csvHeaders) {
             throw Exception(INVALID_CSV_FORMAT_EXCEPTION)
