@@ -53,6 +53,7 @@ export const requestAddRecord = (kycId, record) => {
             record["kycId"] = kycId
             dispatch(addRecord(record))
             dispatch(updateRecordCount({ kycId, increament: 1 }))
+            message.success("Record added");
         }).catch((error) => {
             if (error.response) {
                 message.error(error.response.data.message)
@@ -78,6 +79,7 @@ export const requestUpdateRecord = (kycId, record) => {
             url: `/${kycId}`,
         }).then((response) => {
             dispatch(updateRecord(record))
+            message.success("Record updated");
         }).catch((error) => {
             if (error.response) {
                 message.error(error.response.data.message)
@@ -102,6 +104,7 @@ export const requestDeleteRecord = (kycId, recordId) => {
         }).then(() => {
             dispatch(deleteRecord(recordId))
             dispatch(updateRecordCount({ kycId, increament: -1 }))
+            message.success("Record deleted");
         }).catch((error) => {
             if (error.response) {
                 message.error(error.response.data.message)
@@ -141,6 +144,7 @@ export const deleteKyc = id => {
             url: `/${id}`,
         }).then(() => {
             dispatch({ type: types.DELETE_KYC, payload: { id } })
+            message.success("KYC deleted");
         }).catch((error) => {
             if (error.response) {
                 message.error(error.response.data.message)
@@ -168,6 +172,7 @@ export const requestSampleCSV = (name, fileName) => {
             },
         }).then((response) => {
             dispatch(addKyc(response.data))
+            message.success("Processed sample CSV");
         }).catch((error) => {
             if (error.response) {
                 message.error(error.response.data.message)
@@ -199,6 +204,7 @@ export const requestUploadCSV = (name, file) => {
         }).then((response) => {
             console.log(response.data);
             dispatch(addKyc(response.data))
+            message.success("Uploaded KYC");
         }).catch((error) => {
             if (error.response) {
                 message.error(error.response.data.message)

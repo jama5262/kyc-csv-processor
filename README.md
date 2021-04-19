@@ -4,10 +4,12 @@ Containerized react, spring-boot and mongo-db, used to read kyc information [ na
 
 Docker images can be found here
 
-1. []().
-2. []().
+1. [jama5262/kyc-csv-processor-spring-boot](https://hub.docker.com/repository/docker/jama5262/kyc-csv-processor-react).
+2. [jama5262/kyc-csv-processor-react](https://hub.docker.com/repository/docker/jama5262/kyc-csv-processor-spring-boot).
 
 ## Demo
+
+<img src="./art/image.gif" height="500px">
 
 ## Setup
 
@@ -29,6 +31,21 @@ docker-compose up
 ```
 
 After that check your http://localhost:3000
+
+## Testing
+
+To run spring-boot test, make sure `mongo-db` i running and `cd` into `spring-boot-server` and run the following commands.
+
+For Windows
+```
+mvnw test
+```
+
+For Linux and Mac
+```
+./mvnw test
+```
+
 
 ## Support
 

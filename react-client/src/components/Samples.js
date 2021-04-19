@@ -22,7 +22,7 @@ const Samples = () => {
         <div>
             <UploadSampleCSV />
             <h2>Samples</h2>
-            <h4>Choose one of the samples to process the CSV file</h4>
+            <h4>Try out one of the samples to process the CSV file</h4>
             <List
                 dataSource={samples}
                 renderItem={sample => (
