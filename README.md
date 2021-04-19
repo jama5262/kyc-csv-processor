@@ -9,7 +9,7 @@ Docker images can be found here
 
 ## Demo
 
-<img src="https://github.com/jama5262/kyc-csv-processor/blob/master/art/image.gif" height="500px">
+<img src="https://github.com/jama5262/kyc-csv-processor/blob/master/art/image.gif" height="450px">
 
 ## Setup
 
