@@ -34,7 +34,11 @@ After that check your http://localhost:3000
 
 ## Testing
 
-To run spring-boot test, make sure `mongo-db` i running and `cd` into `spring-boot-server` and run the following commands.
+To run spring-boot test, 
+
+1. Make sure `mongo-db` is running
+2. `cd` into `spring-boot-server` 
+3. And run the following commands.
 
 For Windows
 ```
@@ -45,7 +49,6 @@ For Linux and Mac
 ```
 ./mvnw test
 ```
-
 
 ## Support
 
