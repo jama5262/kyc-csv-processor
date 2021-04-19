@@ -14,12 +14,12 @@ const UploadCSV = () => {
     let dispatch = useDispatch()
 
     const handleUpload = () => {
-        if (file === undefined) {
-            message.error('Please upload a CSV file');
-            return
-        }
         if (name === "") {
             message.error('Please add a name for kyc');
+            return
+        }
+        if (file[0] === undefined) {
+            message.error('Please upload a CSV file');
             return
         }
         dispatch(requestUploadCSV(name, file[0]))

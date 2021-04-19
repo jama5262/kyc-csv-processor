@@ -2,11 +2,10 @@ package com.jama.kyc.kyccsvprocessor.utils
 
 object Constants {
 
-    const val SAMPLES_PATH = "src/main/resources/samples/"
+    val CVS_HEADERS = listOf("name", "phone", "dobTimestamp")
+    val SAMPLE_FILES = listOf("name", "phone", "dobTimestamp")
 
-    val csvHeaders = listOf("name", "phone", "dobTimestamp")
-
-    const val INVALID_FILE_EXCEPTION = "Please upload a CSV file"
+    const val INVALID_FILE_EXCEPTION = "Please upload valid a CSV file"
     const val SAMPLE_CSV_NOT_FOUND_EXCEPTION = "Sample CSV files not found"
     const val INVALID_CSV_FORMAT_EXCEPTION = "Invalid CSV format"
     const val KYC_NOT_FOUND_EXCEPTION = "KYC does not exist"

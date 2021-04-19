@@ -1,7 +1,7 @@
 FROM openjdk:8-jdk
 
-WORKDIR /build
+ADD target/kyc-csv-processor-0.0.1-SNAPSHOT.jar app.jar
 
-COPY . .
+EXPOSE 8080
 
-RUN ./mvnw spring-boot:run
+ENTRYPOINT ["java", "-Dspring.data.mongodb.uri=mongodb://mongo:27017/kyc", "-Djava.security.egd=file:/dev/./urandom", "-jar","/app.jar"]

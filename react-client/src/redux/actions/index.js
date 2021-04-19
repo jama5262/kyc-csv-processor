@@ -48,7 +48,7 @@ export const requestAddRecord = (kycId, record) => {
             data: record,
             url: `/${kycId}`,
         }).then((response) => {
-            let record = response.data["$push"].records
+            let record = response.data.result
             record["key"] = record.id
             record["kycId"] = kycId
             dispatch(addRecord(record))

@@ -8,21 +8,20 @@ import com.jama.kyc.kyccsvprocessor.validate.Validate.validateFileExtension
 import com.jama.kyc.kyccsvprocessor.validate.Validate.validateSampleFileExists
 import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThatThrownBy
+import java.io.File
 
 
 internal class ValidateTest {
 
     @Test
     fun `test validate file does exists`() {
-        val path = "src/test/resources/samples/sample1.csv"
-        validateSampleFileExists(path)
+        validateSampleFileExists("sample1.csv")
     }
 
     @Test
     fun `test validate file does not exists`() {
-        val path = "src/test/resources/samples/invalidSample1.csv"
         assertThatThrownBy {
-            validateSampleFileExists(path)
+            validateSampleFileExists("invalidSample1.csv")
         }.hasMessage(SAMPLE_CSV_NOT_FOUND_EXCEPTION)
     }
 
