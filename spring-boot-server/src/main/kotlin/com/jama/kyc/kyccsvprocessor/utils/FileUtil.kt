@@ -6,7 +6,7 @@ import java.io.InputStreamReader
 
 object FileUtil {
 
-    fun isFilePathValid(fileName: String): InputStream? {
+    fun isSampleFilePathValid(fileName: String): InputStream? {
         return javaClass.classLoader.getResourceAsStream("samples/$fileName")
     }
 

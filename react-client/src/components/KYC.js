@@ -65,17 +65,17 @@ const KYC = () => {
 
     const columns = [
         {
-            title: 'Full name',
+            title: 'name',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: 'Phone number',
+            title: 'phone',
             dataIndex: 'phone',
             key: 'phone',
         },
         {
-            title: 'Date of birth',
+            title: 'dobTimestamp',
             dataIndex: 'dobTimestamp',
             key: 'dobTimestamp',
             render: (text, record) => moment(record.dobTimestamp).format("Do MMM, yyyy")

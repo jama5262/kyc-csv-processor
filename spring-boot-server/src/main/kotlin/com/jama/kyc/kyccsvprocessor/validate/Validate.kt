@@ -4,7 +4,7 @@ import com.jama.kyc.kyccsvprocessor.utils.Constants
 import com.jama.kyc.kyccsvprocessor.utils.Constants.INVALID_CSV_FORMAT_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.Constants.INVALID_FILE_EXCEPTION
 import com.jama.kyc.kyccsvprocessor.utils.Constants.SAMPLE_CSV_NOT_FOUND_EXCEPTION
-import com.jama.kyc.kyccsvprocessor.utils.FileUtil.isFilePathValid
+import com.jama.kyc.kyccsvprocessor.utils.FileUtil.isSampleFilePathValid
 
 object Validate {
 
@@ -17,7 +17,7 @@ object Validate {
     }
 
     fun validateSampleFileExists(fileName: String) {
-        isFilePathValid(fileName) ?: throw Exception(SAMPLE_CSV_NOT_FOUND_EXCEPTION)
+        isSampleFilePathValid(fileName) ?: throw Exception(SAMPLE_CSV_NOT_FOUND_EXCEPTION)
     }
 
     fun validateFileExtension(fileName: String) {

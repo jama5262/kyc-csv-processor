@@ -1,11 +1,6 @@
 import { ADD_SAMPLES } from "../../utils/actionConstants"
 
-const initialState = [
-    {
-        fileName: "sample1.kt",
-        id: 1
-    }
-]
+const initialState = []
 
 export const samples = (state = initialState, action) => {
     switch (action.type) {
