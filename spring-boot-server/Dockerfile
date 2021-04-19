@@ -1,14 +1,6 @@
 FROM openjdk:8-jdk
 
-# RUN ./mvnw --version
-
-# WORKDIR /spring
-
-# COPY . .
-
 ADD target/kyc-csv-processor-0.0.1-SNAPSHOT.jar app.jar
-
-# COPY ${JAR_FILE} ./app.jar
 
 EXPOSE 8080
 

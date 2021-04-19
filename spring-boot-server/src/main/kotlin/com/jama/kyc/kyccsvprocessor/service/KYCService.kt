@@ -5,14 +5,14 @@ import com.jama.kyc.kyccsvprocessor.model.Record
 import com.jama.kyc.kyccsvprocessor.model.Success
 import com.jama.kyc.kyccsvprocessor.repository.KYCRepository
 import com.jama.kyc.kyccsvprocessor.utils.Constants.KYC_NOT_FOUND_EXCEPTION
-import com.jama.kyc.kyccsvprocessor.utils.Constants.SAMPLES_PATH
+import com.jama.kyc.kyccsvprocessor.utils.Constants.SAMPLE_FILES
+import com.jama.kyc.kyccsvprocessor.utils.FileUtil.getSampleFile
 import com.jama.kyc.kyccsvprocessor.utils.records
 import com.jama.kyc.kyccsvprocessor.validate.Validate.validateFileExtension
 import com.jama.kyc.kyccsvprocessor.validate.Validate.validateSampleFileExists
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
-import java.io.File
 
 @Service
 class KYCService {
@@ -34,9 +34,9 @@ class KYCService {
 
     fun uploadSampleCSV(fileName: String, name: String): KYC {
         validateFileExtension(fileName)
-        val path = "$SAMPLES_PATH$fileName"
-        validateSampleFileExists(path)
-        val records = File(path).records()
+        validateSampleFileExists(fileName)
+        val sampleFile = getSampleFile(fileName)
+        val records = sampleFile.records()
         val kyc = KYC(
             name = name,
             fileName = fileName,
@@ -46,11 +46,7 @@ class KYCService {
     }
 
     fun getAllSampleFiles(): List<String> {
-        return File(SAMPLES_PATH)
-            .walk()
-            .filter { it.extension == "csv" }
-            .map { it.name }
-            .toList()
+        return SAMPLE_FILES
     }
 
     fun getAllKYC(): List<KYC> {

@@ -21,9 +21,8 @@ class ExtensionsKtTest {
     }
 
     @Test
-    fun `test get list of records from csv file`() {
-        val path = "src/test/resources/samples/sample1.csv"
-        val csvFile = File(path)
+    fun `test get list of records from sample csv file`() {
+        val csvFile = FileUtil.getSampleFile("sample1.csv")
         val records = csvFile.records()
         assertThat(records)
             .hasSize(2)

@@ -23,21 +23,3 @@ fun String.records(): List<Record> {
             )
         }
 }
-
-fun File.records(): List<Record> {
-    val records = csvReader()
-        .readAll(this)
-
-    validateIfCSVEmpty(records)
-    validateCSVHeaders(records.take(1)[0])
-
-    return records
-        .drop(1) // Drop the first row containing the headers
-        .map {
-            Record(
-                name = it[0],
-                phone = it[1],
-                dobTimestamp = it[2].toLong()
-            )
-        }
-}
