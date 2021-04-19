@@ -1,0 +1,27 @@
+version: "3"
+services: 
+    mongo:
+        image: mongo
+        ports: 
+            - 27017:27017
+        networks: 
+            - app-net
+    spring-boot:
+        image: jama5262/kyc-csv-processor-spring-boot
+        ports: 
+            - 8080:8080
+        depends_on: 
+            - react-app
+        networks: 
+            - app-net
+    react-app:
+        image: jama5262/kyc-csv-processor-react
+        ports: 
+            - 3000:3000
+        depends_on: 
+            - mongo
+        networks: 
+            - app-net
+networks: 
+    app-net:
+        driver: bridge
